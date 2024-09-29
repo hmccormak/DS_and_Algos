@@ -2,11 +2,9 @@ package vigenere;
 
 public class Vigenere {
 	protected char[][] square = new char[26][26];
-	String msg, key;
+	protected String msg, key;
 	
-	public Vigenere(String msg, String key) {
-		this.msg = msg.toUpperCase();
-		this.key = key.toUpperCase();
+	public Vigenere() {
 		for (int i=0; i<26; i++) {
 			char start = (char) ('A' + i);
 			for (int j=0; j<26; j++) {
@@ -19,6 +17,18 @@ public class Vigenere {
 		}
 	}
 	
+	public void setMsgAndKey(String inMsg, String inKey) {
+		this.msg = inMsg.toUpperCase();
+		inKey = inKey.toUpperCase();
+		
+		StringBuilder tempKey = new StringBuilder();
+		
+		for (int i=0; i<inMsg.length(); i++) {
+			tempKey.append(inKey.charAt(i % inKey.length()));
+		}
+		this.key = tempKey.toString();
+	}
+
 	
 	public void getSquare() {
 		for (int i=0; i<26; i++) {
@@ -29,8 +39,36 @@ public class Vigenere {
 		}
 	}
 	
+	public void encode() {
+		int x = 0;
+		int y = 0;
+		StringBuilder builder = new StringBuilder();
+		
+		// row of the key char and column of the msg char
+		for (int i=0; i<this.msg.length(); i++) {
+			char keyChar = this.key.charAt(i);
+			char msgChar = this.msg.charAt(i);
+			for (int j=0; j<square.length; j++) {
+				if (square[j][0] == keyChar) {
+					x = j;
+					break;
+				}
+			}
+			for (int k=0; k<square.length; k++) {
+				if (square[0][k] == msgChar) {
+					y = k;
+					break;
+				}
+			}
+			builder.append(square[x][y]);
+		}
+		System.out.println(builder.toString());
+	}
+	
 	public static void main(String[] args) throws Exception {
-		Vigenere vig = new Vigenere("test", "key");
+		Vigenere vig = new Vigenere();
 		vig.getSquare();
+		vig.setMsgAndKey("meetatthesecretspot", "lalilulelo");
+		vig.encode();
 	}
 }
