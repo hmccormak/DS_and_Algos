@@ -18,6 +18,10 @@ public class Vigenere {
 	}
 	
 	public void setMsgAndKey(String inMsg, String inKey) {
+		if (!(checkInputs(inMsg) || !(checkInputs(inKey)))) {
+			throw new IllegalArgumentException("Letters only, no spaces either.");
+		}
+		
 		this.msg = inMsg.toUpperCase();
 		inKey = inKey.toUpperCase();
 		
@@ -63,6 +67,10 @@ public class Vigenere {
 			builder.append(square[x][y]);
 		}
 		System.out.println(builder.toString());
+	}
+	
+	boolean checkInputs(String str) {
+		return str.chars().allMatch(Character::isLetter);
 	}
 	
 	public static void main(String[] args) throws Exception {
